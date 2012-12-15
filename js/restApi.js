@@ -1,6 +1,7 @@
 restApi = function(){
 	
-	var token_url = "https://api.baas.io/rygh4775/accountbook/token?grant_type=client_credentials&client_id=YXA660qRUziDEeKiwQIAOlcAEA&client_secret=YXA6N9CGqNxA9OhVOknMAMe9CEckDrI";
+	var token_url = page.restUrl + "token?grant_type=client_credentials&client_id="+page.client_id+"&client_secret="+page.client_secret;
+
 	
 	$.getJSON(token_url,function(data){
 	    page.outh_token = data.access_token;
