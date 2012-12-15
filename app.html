@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+<link rel="stylesheet" href="./css/my.css" />
+
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+<script>
+page = {
+		  org_name : 'rygh4775',			//change
+		  app_name : 'accountbook',			//change
+		  outh_token : '',
+		  loged_user : '',
+		  loged_group : ''
+		};
+page.restUrl = 'https://api.baas.io/'+page.org_name+'/'+page.app_name+'/';
+</script>
+
+<script src="./js/toJson.js"></script>
+<script src="./js/restApi.js"></script>
+
+<script src="./app.js"></script>
+
+</head>
+<body>
+	<!-- 메인화면 -->
+	<div data-role="page" id="main">
+		<div data-role="content">
+				<img src="images/logo.jpg"  alt="image"	style="position: absolute; margin-left: -16px; margin-top: -18px" />
+		</div>
+		<div data-theme="a" data-role="footer" data-position="fixed">	
+			<div data-role="navbar">
+				<ul>
+					<li><a data-role="button" href="#Join us"  data-rel="dialog"> 가입하기 </a></li>
+					<li><a data-role="button" href="#Log in"   data-rel="dialog"> 접속하기 </a> </li>
+				</ul>
+				
+			</div>
+		</div>
+	</div>
+
+	<div data-role="page" id="Join us">
+		<div data-role="header">
+			<h1>Join us</h1>
+		</div>
+
+		<div data-role="content">
+			<div data-role="fieldcontain">
+				<form id="createUserForm">
+						<input type="hidden" name="path" id="path" value="path" data-mini="true"> 
+					
+					<span>UserName</span>
+						<input type="text" name="username" id="username" value="" data-mini="true"> 
+							<br><br>
+					<span style="margin-right:5px;">Password</span>
+						<input type="password" name="password" id="password" value="" data-mini="true">
+						<br><br>
+					<span style="margin-right:5px;">Password</span>
+						<input type="password" name="confirmPassword" id="confirmPassword" value="" data-mini="true">
+				</form>
+			</div>
+
+			<a href="#main" id="createUser" data-role="button" data-inline="true">확인</a> 
+			<a href="#main" data-role="button" data-inline="true">닫기</a>
+		</div>
+	</div>
+
+	<div data-role="page" id="Log in">
+		<div data-role="header">
+			<h1>Log in</h1>
+		</div>
+		<div data-role="content">
+			<div data-role="fieldcontain">
+				<form id="loginUserForm">
+					<span>UserName</span>
+						<input type="text" name="username" id="username" value="" data-mini="true"> 
+							<br><br>
+					<span style="margin-right:5px;">Password</span>
+						<input type="password" name="password" id="password" value="" data-mini="true">
+				</form>
+			</div>
+			<a id =logIn_btn target="_self" data-role="button"	data-inline="true">확인</a>
+			<a href="#main" data-role="button"	data-inline="true">닫기</a>
+		</div>
+	</div>
+
+	<!-- 그룹 창-->
+
+	<div data-role="page" id="groups">
+		<div data-role="header">
+			<h1>Groups</h1>
+		</div>
+			<div data-role="content" id="groupList">
+				<a href="#addgroup" data-role="button" data-icon="plus" data-rel="dialog" data-iconpos="right">그룹 추가</a>
+			</div>
+		<div data-theme="a" data-role="footer" data-position="fixed">	
+			<div data-role="navbar">
+				<ul>
+					<li><a data-role="button" href="#main"> Logout </a></li>
+				</ul>
+			</div>
+		</div>	
+	</div>
+
+	<div data-role="page" id="addgroup">
+		<div data-role="header">
+			<h1>그룹 추가</h1>
+		</div>
+		<div data-role="content">
+		<form id="createGroupForm">
+					<input type="hidden" name="path" id="path" value="pathValue" data-mini="true">		
+					<span style="margin-right:50px">그룹 명</span>
+					<input type="text" name="name" id="name" value="" data-mini="true">
+					
+				<a id="addGroup_btn" data-role="button" data-inline="true">확인</a> 
+				<a href="#groups"data-role="button" data-inline="true">닫기</a>
+			</form>
+		</div>
+	</div>
+
+	<!-- 가계부 -->
+
+	<div data-role="page" id="cashbook">
+		<div data-role="header">
+			<h1 class="groupName"></h1>
+			<a href="#groups" data-role="button" data-inline="true">그룹 선택</a>
+			<a id="setup_btn"  data-role="button" data-inline="true">설정</a>
+		</div>
+		<div data-role="content">
+			<center><span type="text" id="datepicker" ></span></center>				
+			<br>
+				<div data-role="contetn" id=dayState>
+					<div class="ui-body ui-body-c">
+						<center>
+							<div class="ui-grid-b">
+								<div class="ui-block-a">총 수입</div>
+								<div class="ui-block-b">총 지출</div>
+								<div class="ui-block-c">총 금액</div>
+								<div class="ui-block-a"><span style="color:#0100FF;" id="totalDeposit"></span></div>
+								<div class="ui-block-b"><span style="color:#FF0000;"id="totalWithdrawal"></span></div>
+								<div class="ui-block-c" id="amount"></div>
+							</div>	
+						</center>
+					</div>
+				</div>
+		</div>
+			<br>
+								
+		<div data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a data-role="button" href="#inputAccounts"> 입력하기 </a></li>
+					<li><a data-role="button" id="asset_btn" href="#asset" data-rel="dialog"> 자산 </a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div data-role="page" id="inputAccounts">
+		<div data-role="header">
+			<h1>입 력</h1>
+		</div>
+		<div data-role="content">
+			<div id="tabs">
+				<ul>
+					<li><a href="#tabs-1">입 금</a></li>
+					<li><a href="#tabs-2">출 금</a></li>
+				</ul>
+				<div id="tabs-1">
+					<div class="ui-body ui-body-c">
+						<form id="depositForm">
+							<span style="margin-right:8px;">날짜 </span>
+							<input type="text" id="datepicker2" name="date" style="width:80%; height:100%; display:inline-block;" />
+							<br>
+							<div data-role="fieldcontain">
+								 <span style="margin-right: 10px;"> 금액</span>
+								 <input type="text" name="deposit" id="deposit" value="" data-mini="true" />
+							</div>
+												
+							<div data-role="fieldcontain">
+								 <span style="margin-right: 10px;  height:50% ">내용</span>
+								 <input type="text" name="contents" id="contents"value="" data-mini="true">
+							</div>
+						</form>
+					</div>
+					<br>
+					<center>
+						<a data-role="button" id="deposit_btn" href="#cashbook" data-inline="true"> 확인 </a>
+						<a data-role="button" href="#cashbook" data-inline="true"> 취소 </a>
+					</center>
+				</div>
+				<div id="tabs-2">
+					<div class="ui-body ui-body-c">
+						<form id="withdrawalForm">
+							<span style="margin-right:8px;">날짜 </span>
+							<input type="text" id="datepicker3" name="date" style="width:80%; height:100%; display:inline-block;" />
+							<br>
+							<div data-role="fieldcontain">
+								 <span style="margin-right: 10px;"> 금액</span>
+								 <input type="text" name="withdrawal" id="withdrawal" value="" data-mini="true" />
+							</div>
+												
+							<div data-role="fieldcontain">
+								 <span style="margin-right: 10px;  height:50% ">내용</span>
+								 <input type="text" name="contents" id="txt"value="" data-mini="true">
+							</div>
+						</form>
+					</div>
+					<br>
+					<center>
+						<a data-role="button" id="withdrawl_btn" href="#cashbook" data-inline="true"> 확인 </a>
+						<a data-role="button" href="#cashbook" data-inline="true"> 취소 </a>
+					</center>
+				</div>
+			</div>
+			<div data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a data-role="button" href="#input"> 입력하기 </a></li>
+					<li><a data-role="button" id="asset_btn" href="#asset" data-rel="dialog"> 자산 </a></li>
+				</ul>
+			</div>
+		</div>
+		</div>
+	</div>
+	
+	<div data-role="page" id="asset">
+		<div data-role="header">
+			<h1>자산</h1>
+		</div>
+		<div data-role="content">
+				
+			<div class="ui-body ui-body-c">
+				<div class="ui-grid-b">
+				<div class="ui-block-a">수입</div>
+				<div class="ui-block-b">지출</div>
+				<div class="ui-block-c">총액</div>
+				<div class="ui-block-a"><span style="color:#0100FF;" id="allDeposit"></span></div>
+				<div class="ui-block-b"><span style="color:#FF0000;" id="allWithdrawal"></span></div>
+				<div class="ui-block-c" id="allAmount"></div>
+			</div>
+		</div>
+		<br><br>
+		<center>
+				<a data-role="button" href="#cashbook" data-inline="true"> 확인 </a>
+			</center>		
+	</div>
+</div>
+	
+	<div data-role="page" id="setup">
+		<div data-role="header">
+			<h1>설정</h1>
+		</div>
+		<div data-role="content">
+			<div class="ui-body ui-body-c">
+				<center>
+				<span class="groupName" style="font-size:30px;"></span>
+				</center>
+				<p>멤버목록</p>
+					<div class="ui-body ui-body-d" id="memberList">
+					
+					</div>
+				<a data-role="button" href="#adduser" data-rel="dialog"> 멤버초대</a>
+
+			</div>
+			<center>
+				<a data-role="button" href="#cashbook" data-inline="true"> 확인 </a>
+			</center>
+			</div>
+		</div>
+	
+
+	<div data-role="page" id="adduser">
+		<div data-role="header">
+			<h1>멤버 초대</h1>
+		</div>
+		<div data-role="content">
+			<input type="text" name="inviteUser" id="inviteUser" value="" data-mini="true">
+				 <a id="addUser_btn" data-role="button"data-inline="true">확인</a>
+				 <a href="#setup" data-role="button"data-inline="true">닫기</a>
+		</div>
+	</div>
+	
+</body>
+</html>
