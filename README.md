@@ -9,7 +9,7 @@ When the setting for getting token key is changed, such as client_id, cilent_sec
 this app can't be working properly.
 
 In this case, you can change the options in page object with yours. 
-But I don't recommend how to get the token key in this project because of the security issue.
+But the way getting token in this propject is not good because of the security issue.
 
 
 
