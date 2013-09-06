@@ -10,7 +10,3 @@ this app can't be working properly.
 
 In this case, you can change the options in page object with yours. 
 But the way getting token in this propject is not good because of the security issue.
-
-
-
-
