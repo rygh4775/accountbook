@@ -1,12 +1,16 @@
-accountbook
-===========
+# AccountBook
+AccountBook is a service for the management of group accounting.
 
-sharing the accounts with members in a group
+## Demo
 
-using jquery mobile and baas.io for backend as a service.
+![main-page](/image/main-page.png)
 
-When the setting for getting token key is changed, such as client_id, cilent_secret,
-this app can't be working properly.
+## Motivation
+My first experience with web app
 
-In this case, you can change the options in page object with yours. 
-But the way getting token in this propject is not good because of the security issue.
+## Skills
+* jQueryMobile
+* baas.io for backend as a service
+
+## Project period
+November 2012 ~ December 2012
